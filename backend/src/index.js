@@ -15,11 +15,12 @@ app.post("/", (req, res) => {
    console.log(password)
    if (user) {
       res.send({
-         success: true
+        user,
+        error : false        
       })
    } else {
       res.send({
-         success: false
+         error:true
       })
    }
 

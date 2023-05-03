@@ -1,63 +1,23 @@
-import { useState } from 'react'
 import './App.css'
-import { Alert, Button, Container, Input } from '@mantine/core'
+import LoginPage from './pages/LoginPage'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import HomePage from './pages/HomePage'
+import { UserProvider  } from './context/UserContext'
+
 
 function App() {
-
-  const [email, setEmail] = useState("rodrigo")
-  const [password, setPassword] = useState("123456")
-  const [success, setSuccess] = useState("")
-  const [isOpen, setIsOpen] = useState(false)
-
-
-  const handleClick = async () => {
-    const response = await fetch("http://localhost:5000/", {
-      method: "POST",
-      body: JSON.stringify(
-        {
-          email,
-          password
-        }
-      ),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-
-    response.json().then(res => {
-      setSuccess(res.success)
-    })
-    
-    setIsOpen(true)
-  }
-
-
-  const LoginAlert = (
-    <Alert color={success ?'green' : "red" } title={success ?'sucesso' : "erro" }>
-   { success ? "usuario encontrado" : "usuario nao encontrado"}
-  </Alert>
-  )
   return (
-    <Container>
-      <Input
-        onChange={(e) => setEmail(e.target.value)}
-        value={email}
-        placeholder="Your email"
-      />
-      <Input
-        onChange={(e) => setPassword(e.target.value)}
-        value={password}
-        placeholder="Your password"
-      />
+    <UserProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route index element={<LoginPage/>}/>
+          <Route path='/home' element={<HomePage/>}/>
 
-      <Button onClick={handleClick}>
-        Sign In
-      </Button>
-
-      {isOpen ? LoginAlert : null}
-
-    </Container>
+        </Routes>
+      </BrowserRouter>
+    </UserProvider>
   )
+
 }
 
 export default App
